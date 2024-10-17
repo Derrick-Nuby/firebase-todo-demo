@@ -33,7 +33,7 @@ function App() {
             <Login />
           </div>
         )}
-        <ToastContainer />
+        <ToastContainer position="top-center" />
       </div>
     </QueryClientProvider>
   );

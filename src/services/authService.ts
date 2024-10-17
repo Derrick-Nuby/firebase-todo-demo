@@ -1,14 +1,16 @@
 // src/services/authService.ts
-import { auth } from "../firebase"; // Adjust the import path as necessary
+import { auth } from "../firebase";
 import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signOut,
     GoogleAuthProvider,
     signInWithPopup,
+    GithubAuthProvider,
 } from "firebase/auth";
 
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 export const authService = {
     async register(email: string, password: string) {
@@ -20,7 +22,11 @@ export const authService = {
     },
 
     async loginWithGoogle() {
-        return await signInWithPopup(auth, provider);
+        return await signInWithPopup(auth, googleProvider);
+    },
+
+    loginWithGithub: async () => {
+        await signInWithPopup(auth, githubProvider);
     },
 
     async logout() {

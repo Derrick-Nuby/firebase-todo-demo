@@ -1,6 +1,7 @@
 // src/components/CreateAccount.tsx
 import React, { useState } from "react";
 import { authService } from "../services/authService";
+import { toast } from "react-toastify";
 
 export const CreateAccount: React.FC<{ onAccountCreated: () => void; onLoginClick: () => void; }> = ({ onAccountCreated, onLoginClick }) => {
     const [email, setEmail] = useState("");
@@ -10,10 +11,11 @@ export const CreateAccount: React.FC<{ onAccountCreated: () => void; onLoginClic
         e.preventDefault();
         try {
             await authService.register(email, password);
-            // Call the prop function to inform the parent component
+            toast.success("Account created successfully!");
             onAccountCreated();
         } catch (error) {
             console.error("Registration failed", error);
+            toast.error("Registration failed. Please try again.");
         }
     };
 
@@ -46,7 +48,7 @@ export const CreateAccount: React.FC<{ onAccountCreated: () => void; onLoginClic
                 <p className="text-center">
                     Already have an account?{" "}
                     <span
-                        onClick={onLoginClick}  // Trigger login navigation
+                        onClick={onLoginClick}
                         className="text-blue-500 font-semibold cursor-pointer"
                     >
                         Login

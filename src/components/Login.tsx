@@ -1,5 +1,5 @@
-// src/components/Login.tsx
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { authService } from "../services/authService";
 import { CreateAccount } from "./CreateAccount";
 
@@ -12,18 +12,30 @@ export const Login: React.FC = () => {
         e.preventDefault();
         try {
             await authService.loginWithEmail(email, password);
-            // Handle successful login (e.g., redirect or show a success message)
+            toast.success("Logged in successfully!");
         } catch (error) {
             console.error("Login failed", error);
+            toast.error("Login failed. Please check your credentials.");
         }
     };
 
     const handleGoogleLogin = async () => {
         try {
             await authService.loginWithGoogle();
-            // Handle successful Google login
+            toast.success("Logged in with Google successfully!");
         } catch (error) {
             console.error("Google login failed", error);
+            toast.error("Google login failed. Please try again.");
+        }
+    };
+
+    const handleGithubLogin = async () => {
+        try {
+            await authService.loginWithGithub();
+            toast.success("Logged in with GitHub successfully!");
+        } catch (error) {
+            console.error("GitHub login failed", error);
+            toast.error("GitHub login failed. Please try again.");
         }
     };
 
@@ -31,8 +43,11 @@ export const Login: React.FC = () => {
         <div className="mb-6">
             {isCreatingAccount ? (
                 <CreateAccount
-                    onAccountCreated={() => setIsCreatingAccount(false)}
-                    onLoginClick={() => setIsCreatingAccount(false)}  // Go back to login
+                    onAccountCreated={() => {
+                        setIsCreatingAccount(false);
+                        toast.success("Account created successfully! Please log in.");
+                    }}
+                    onLoginClick={() => setIsCreatingAccount(false)}
                 />
             ) : (
                 <>
@@ -65,6 +80,12 @@ export const Login: React.FC = () => {
                         className="w-full mt-4 bg-gray-800 text-white p-3 rounded hover:bg-gray-700 transition duration-200"
                     >
                         Login with Google
+                    </button>
+                    <button
+                        onClick={handleGithubLogin}
+                        className="w-full mt-4 bg-gray-800 text-white p-3 rounded hover:bg-gray-700 transition duration-200"
+                    >
+                        Login with GitHub
                     </button>
                     <p className="text-center mt-4">
                         Don't have an account?
